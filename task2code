@@ -1,0 +1,31 @@
+clc;
+clear;
+close all;
+
+J = 0.01;
+B = 0.1;
+Kt = 0.01;
+Kb = 0.01;
+R = 1;
+L = 0.5;
+
+num = [Kt];
+den = [J*L (J*R + B*L) (B*R + Kt*Kb)];
+
+motor = tf(num,den);
+
+Kp = 100;
+Ki = 200;
+Kd = 10;
+
+C = pid(Kp,Ki,Kd);
+
+closed_loop = feedback(C*motor,1);
+
+figure;
+step(closed_loop);
+grid on;
+
+title('PID Speed Control Response');
+xlabel('Time (seconds)');
+ylabel('Motor Speed');
